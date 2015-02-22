@@ -1,5 +1,6 @@
 $(function() {
   var players = [];
+  var match = "";
   var jsonStream = new EventSource('stream.php');
   
   jsonStream.onmessage = function (e) {
@@ -8,6 +9,7 @@ $(function() {
     function addTo(type, data) {
       switch (type) {
         case 'gamestart':
+          match = Math.random().toString(36).substr(2, 5);;
           $('#' + type + ' table').append(
             '<tr>' +
               '<td>' + data.mapname + '</td>' +
@@ -15,6 +17,7 @@ $(function() {
               '<td>' + data.gametype + '</td>' +
             '</tr>'
           );
+          $('#players').append('<li><h2>Match ' + match + '</h2><table class="table" id="match-' + match + '"><tr><th>Player ID</th><th>Nickname</th><th>Kills</th><th>Deaths</th></tr></table></li>');
           break;
         case 'gameinfo':
           $('#' + type).append('<li>' +
@@ -44,8 +47,8 @@ $(function() {
               '<td>' + data.team + '</td>' +
             '</tr>'
           );
-          $('#players table').append(
-            '<tr id="player-' + data.id + '">' +
+          $('#players #match-' + match).append(
+            '<tr id="' + match + '-player-' + data.id + '">' +
               '<td>' + data.id + '</td>' +
               '<td>' + players[data.id].nickname + '</td>' +
               '<td class="kills">' + players[data.id].kills + '</td>' +
@@ -68,11 +71,11 @@ $(function() {
               '<td>' + data['victim-items'] + '</td>' +
             '</tr>'
           );
-          $('#player-' + data['killer-id'] + ' .kills').addClass('attn').text(players[data['killer-id']].kills);
-          $('#player-' + data['victim-id'] + ' .deaths').addClass('attn').text(players[data['victim-id']].deaths);
+          $('#' + match + '-player-' + data['killer-id'] + ' .kills').addClass('attn').text(players[data['killer-id']].kills);
+          $('#' + match + '-player-' + data['victim-id'] + ' .deaths').addClass('attn').text(players[data['victim-id']].deaths);
           setTimeout(function() {
-            $('#player-' + data['killer-id'] + ' .kills').removeClass('attn');
-            $('#player-' + data['victim-id'] + ' .deaths').removeClass('attn');
+            $('#' + match + '-player-' + data['killer-id'] + ' .kills').removeClass('attn');
+            $('#' + match + '-player-' + data['victim-id'] + ' .deaths').removeClass('attn');
           }, 1000);
           break;
         case 'part':
