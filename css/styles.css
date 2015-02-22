@@ -1,0 +1,15 @@
+:focus {outline:none !important;} /* remove dotted outlines in FF */
+
+body { font-size: 140%; }
+
+#wrap {
+  padding:20px;
+}
+
+.page-header i {
+  color: #94D5F5;
+  text-shadow: 1px 1px 1px #ccc;
+}
+#game a.active {
+  text-decoration: underline;
+}

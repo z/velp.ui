@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=2.0">
+  <meta name="description" content="">
+  <meta name="author" content="Tyler -z- Mulligan">
+  <link rel="icon" href="favicon.ico">
+
+  <title>velp ui</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+  <script src="js/lib/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="js/scripts.js"></script>
+</head>
+
+<body>
+
+  <section id="wrap">
+
+    <div class="page-header">
+      <h1 class="text-primary">velp ui</h1>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#tab-1" aria-controls="tab-1" role="tab" data-toggle="tab">Game Start</a></li>
+      <li role="presentation"><a href="#tab-2" aria-controls="tab-2" role="tab" data-toggle="tab">Game Info</a></li>
+      <li role="presentation"><a href="#tab-3" aria-controls="tab-3" role="tab" data-toggle="tab">Game Info End</a></li>
+      <li role="presentation"><a href="#tab-4" aria-controls="tab-4" role="tab" data-toggle="tab">Join</a></li>
+      <li role="presentation"><a href="#tab-5" aria-controls="tab-5" role="tab" data-toggle="tab">Team</a></li>
+      <li role="presentation"><a href="#tab-6" aria-controls="tab-6" role="tab" data-toggle="tab">Kill</a></li>
+      <li role="presentation"><a href="#tab-7" aria-controls="tab-7" role="tab" data-toggle="tab">Part</a></li>
+    </ul>
+    
+    <div class="row">
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+
+        <div role="tabpanel" class="tab-pane active" id="tab-1">
+
+          <h3>Game Start</h3>
+          <ul id="gamestart">
+            <li><table class="table"><tr><th>Map Name</th><th>Match ID</th><th>Game Type</th></tr></li></table>
+          </ul>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-2">
+
+          <h3>Game Info</h3>
+          <ul id="gameinfo"></ul>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-3">
+
+          <h3>Game Info End</h3>
+          <ul id="gameinfoend"></ul>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-4">
+
+          <h3>Join</h3>
+          <ul id="join">
+            <li><table class="table"><tr><th>Slot</th><th>IP</th><th>Nickname</th><th>Player ID</th></tr></table></li>
+          </ul>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-5">
+
+          <h3>Team</h3>
+          <ul id="team">
+            <li><table class="table"><tr><th>Player ID</th><th>Nickname</th><th>Team ID</th></tr></table></li>
+          </ul>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-6">
+
+          <h3>Kill</h3>
+          <ul id="kill">
+            <li><table class="table"><tr><th>Kill Type</th><th>Killer</th><th>Killer Items</th><th>Cause of Death</th><th>Target Position</th><th>Victim</th><th>Attack Position</th><th>Victim Items</th></tr></table></li>
+          </ul>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab-7">
+
+          <h3>Part</h3>
+          <ul id="part">
+            <li><table class="table"><tr><th>Player ID</th></tr></table></li>
+          </ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+</body>
+</html>
