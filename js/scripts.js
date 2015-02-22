@@ -25,7 +25,7 @@ $(function() {
           $('#' + type).append('<li>!!</li>');
           break;
         case 'join':
-          players[data.id] = { 'nickname': data.nickname };
+          players[data.id] = { 'nickname': data.nickname, 'kills': 0, 'deaths': 0, 'team': 0 };
           $('#' + type + ' table').append(
             '<tr>' +
               '<td>' + data.slot + '</td>' +
@@ -36,6 +36,7 @@ $(function() {
           );
           break;
         case 'team':
+          players[data.id].team = data.team;
           $('#' + type + ' table').append(
             '<tr>' +
               '<td>' + data.id + '</td>' +
@@ -43,8 +44,18 @@ $(function() {
               '<td>' + data.team + '</td>' +
             '</tr>'
           );
+          $('#players table').append(
+            '<tr id="player-' + data.id + '">' +
+              '<td>' + data.id + '</td>' +
+              '<td>' + players[data.id].nickname + '</td>' +
+              '<td class="kills">' + players[data.id].kills + '</td>' +
+              '<td class="deaths">' + players[data.id].deaths + '</td>' +
+            '</tr>'
+          );
           break;
         case 'kill':
+          players[data['killer-id']].kills++;
+          players[data['victim-id']].deaths++;
           $('#' + type + ' table').append(
             '<tr>' +
               '<td>' + data.killtype + '</td>' +
@@ -57,6 +68,8 @@ $(function() {
               '<td>' + data['victim-items'] + '</td>' +
             '</tr>'
           );
+          $('#player-' + data['killer-id'] + ' .kills').text(players[data['killer-id']].kills);
+          $('#player-' + data['victim-id'] + ' .deaths').text(players[data['victim-id']].deaths);
           break;
         case 'part':
           $('#' + type + ' table').append(

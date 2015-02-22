@@ -14,7 +14,7 @@ while ($match_line = fgets($f)) {
 
   ob_flush();
   flush();
-  sleep(1);
+  usleep(100000);
 }
 
 fclose($match_file);
