@@ -68,8 +68,12 @@ $(function() {
               '<td>' + data['victim-items'] + '</td>' +
             '</tr>'
           );
-          $('#player-' + data['killer-id'] + ' .kills').text(players[data['killer-id']].kills);
-          $('#player-' + data['victim-id'] + ' .deaths').text(players[data['victim-id']].deaths);
+          $('#player-' + data['killer-id'] + ' .kills').addClass('attn').text(players[data['killer-id']].kills);
+          $('#player-' + data['victim-id'] + ' .deaths').addClass('attn').text(players[data['victim-id']].deaths);
+          setTimeout(function() {
+            $('#player-' + data['killer-id'] + ' .kills').removeClass('attn');
+            $('#player-' + data['victim-id'] + ' .deaths').removeClass('attn');
+          }, 1000);
           break;
         case 'part':
           $('#' + type + ' table').append(
