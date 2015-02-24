@@ -25,6 +25,13 @@ $(function() {
       }, 1000);
     }
 
+    function highlightUpdate(column) {
+      $(column).addClass('attn');
+      setTimeout(function() {
+        $(column).removeClass('attn');
+      }, 1000);
+    }
+
     function addTo(type, data) {
       switch (type) {
         case 'gamestart':
@@ -75,7 +82,7 @@ $(function() {
               '<th>Drops</th>';
           }
           $('#match-' + mid + ' .players').append(
-            '<table class="table match-players">' +
+            '<br /><table class="table match-players">' +
               '<thead>' +
                 '<tr>' +
                   '<th>Player ID</th>' +
@@ -118,6 +125,10 @@ $(function() {
               '</thead>' +
             '</table>'
           );
+          $('#match-' + mid + ' table.match-players').dataTable({
+            pageLength: 35
+          });
+          //$('#match-' + mid + ' table.match-kills').dataTable();
           break;
         case 'gameinfo':
           var mutators = "";
@@ -152,10 +163,6 @@ $(function() {
           var teamcolor = "";
           players[data.id].team = data.team;
           if (m.gametype == "ctf") {
-            game = '<td class="captures">' + players[data.id].captures + '</td>' +
-              '<td class="steals">' + players[data.id].steals + '</td>' +
-              '<td class="returns">' + players[data.id].returns + '</td>' +
-              '<td class="drops">' + players[data.id].drops + '</td>';
             if (players[data.id].team == 5) { teamcolor = ' class="red"'; }
             if (players[data.id].team == 14) { teamcolor = ' class="blue"'; }
           }
@@ -169,7 +176,7 @@ $(function() {
               '<td>' + players[data.id].team + '</td>' +
             '</tr>'
           );
-          $('#match-' + mid + ' .match-players').append(
+          /*$('#match-' + mid + ' .match-players').append(
             '<tr id="' + mid + '-player-' + data.id + '"' + teamcolor + '>' +
               '<td>' + data.id + '</td>' +
               '<td>' + data.team + '</td>' +
@@ -178,7 +185,31 @@ $(function() {
               '<td class="deaths">' + players[data.id].deaths + '</td>' +
               game +
             '</tr>'
-          );
+          );*/
+          if (m.gametype == "ctf") {
+            var tRow = $('<tr id="' + mid + '-player-' + data.id + '"' + teamcolor + '>').append(
+                '<td>' + data.id + '</td>',
+                '<td>' + data.team + '</td>',
+                '<td>' + players[data.id].nickname + '</td>',
+                '<td class="kills">' + players[data.id].kills + '</td>',
+                '<td class="deaths">' + players[data.id].deaths + '</td>',
+                '<td class="captures">' + players[data.id].captures + '</td>',
+                '<td class="steals">' + players[data.id].steals + '</td>',
+                '<td class="returns">' + players[data.id].returns + '</td>',
+                '<td class="drops">' + players[data.id].drops + '</td>',
+              '</tr>'
+            );
+          } else {
+            var tRow = $('<tr id="' + mid + '-player-' + data.id + '"' + teamcolor + '>').append(
+                '<td>' + data.id + '</td>',
+                '<td>' + data.team + '</td>',
+                '<td>' + players[data.id].nickname + '</td>',
+                '<td class="kills">' + players[data.id].kills + '</td>',
+                '<td class="deaths">' + players[data.id].deaths + '</td>',
+              '</tr>'
+            );
+          }
+          $('#match-' + mid + ' table.match-players').DataTable().row.add(tRow).draw();
           break;
         case 'kill':
           var teamcolor = "";
@@ -200,26 +231,52 @@ $(function() {
               '<td>' + data['victim-items'] + '</td>' +
             '</tr>'
           );
-          updateScore('#' + mid + '-player-' + data['killer-id'] + ' .kills', players[data['killer-id']].kills);
-          updateScore('#' + mid + '-player-' + data['victim-id'] + ' .deaths', players[data['victim-id']].kills);
+          /*var tRow = $('<tr' + teamcolor + '>').append(
+              '<td>' + data.killtype + '</td>',
+              '<td>' + players[data['killer-id']].nickname + '</td>',
+              '<td>' + data['killer-items'] + '</td>',
+              '<td>' + data.cod + '</td>',
+              '<td>' + data.targetpos + '</td>',
+              '<td>' + players[data['victim-id']].nickname + '</td>',
+              '<td>' + data.attackpos + '</td>',
+              '<td>' + data['victim-items'] + '</td>',
+            '</tr>'
+          );
+          $('#match-' + mid + ' table.match-kills').DataTable().row.add(tRow).draw();*/
+          //updateScore('#' + mid + '-player-' + data['killer-id'] + ' .kills', players[data['killer-id']].kills);
+          //updateScore('#' + mid + '-player-' + data['victim-id'] + ' .deaths', players[data['victim-id']].deaths);
+          var colKill = $('#match-' + mid + ' table.match-players').DataTable().cell('#' + mid + '-player-' + data['killer-id'], 3).data(players[data['killer-id']].kills).draw().node();
+          var colDead = $('#match-' + mid + ' table.match-players').DataTable().cell('#' + mid + '-player-' + data['victim-id'], 4).data(players[data['victim-id']].deaths).draw().node();
+          highlightUpdate(colKill);
+          highlightUpdate(colDead);
           break;
         case 'ctf':
+          var $matchPlayers = $('#match-' + mid + ' table.match-players');
+          var cell = '#' + mid + '-player-' + data['player-id'];
           switch (data.ctftype) {
             case "capture":
               players[data['player-id']].captures++;
-              updateScore('#' + mid + '-player-' + data['player-id'] + ' .captures', players[data['player-id']].captures);
+              //updateScore('#' + mid + '-player-' + data['player-id'] + ' .captures', players[data['player-id']].captures);
+              var colCaptures = $matchPlayers.DataTable().cell(cell, 5).data(players[data['player-id']].captures).draw().node();
+              highlightUpdate(colCaptures);
               break;
             case "steal":
               players[data['player-id']].steals++;
-              updateScore('#' + mid + '-player-' + data['player-id'] + ' .steals', players[data['player-id']].steals);
+              //updateScore('#' + mid + '-player-' + data['player-id'] + ' .steals', players[data['player-id']].steals);
+              var colSteals = $matchPlayers.DataTable().cell(cell, 6).data(players[data['player-id']].steals).draw().node();
+              highlightUpdate(colSteals);
               break;
             case "return":
               players[data['player-id']].returns++;
-              updateScore('#' + mid + '-player-' + data['player-id'] + ' .returns', players[data['player-id']].returns);
+              //updateScore('#' + mid + '-player-' + data['player-id'] + ' .returns', players[data['player-id']].returns);
+              var colReturns = $matchPlayers.DataTable().cell(cell, 7).data(players[data['player-id']].returns).draw().node();
+              highlightUpdate(colReturns);
               break;
             case "drop":
               players[data['player-id']].drops++;
-              updateScore('#' + mid + '-player-' + data['player-id'] + ' .drops', players[data['player-id']].drops);
+              //updateScore('#' + mid + '-player-' + data['player-id'] + ' .drops', players[data['player-id']].drops);
+              var colDrops = $matchPlayers.DataTable().cell(cell, 8).data(players[data['player-id']].drops).draw().node();
+              highlightUpdate(colDrops);
               break;
             default:
           }
