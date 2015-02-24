@@ -4,3 +4,5 @@ Data is being read in via a "mock web socket" using JSON events data generated b
 In production, a real web socket can be used to view match data in real time.
 
 Alternatively, an mock event stream (SSE) can be used with 'stream.php'.
+
+[Live Demo](http://z.github.io/velp.ui)
