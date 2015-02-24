@@ -3,7 +3,20 @@
 body { font-size: 140%; }
 
 #wrap {
-  padding:20px;
+  padding: 20px;
+}
+
+.panel-heading.collapser h3 > a:after {
+  font-family:'Glyphicons Halflings';
+  content:"\e114";
+  float: right;
+}
+.panel-heading.collapser h3 > a.collapsed:after {
+  content:"\e080";
+}
+
+.match-players {
+  border-top: none !important;
 }
 
 .attn {
