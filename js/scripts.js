@@ -12,10 +12,9 @@ $(function() {
           match = Math.random().toString(36).substr(2, 5);
           $("#matches").append(
             '<div class="panel panel-primary">' +
-              '<div class="panel-heading collapser"><h3 class="panel-title"><a data-toggle="collapse" data-target="#match-' + match + '" href="#match-' + match + '">Match ' + match + '</a></h3></div>' +
+              '<div class="panel-heading collapser"><h3 class="panel-title"><a data-toggle="collapse" data-target="#match-' + match + '" href="#match-' + match + '">Match ' + data.matchid + '</a></h3></div>' +
               '<div id="match-' + match + '" class="panel-collapse collapse in">' +
                 '<div class="panel-body">' +
-                  '<h4>Match ' + match + '</h4>' +
                   '<table class="table game-info">' +
                     '<tr>' +
                       '<th>Map Name</th>' +
@@ -117,13 +116,13 @@ $(function() {
               '<td>' + players[data.id].ip + '</td>' +
               '<td>' + players[data.id].nickname + '</td>' +
               '<td>' + data.id + '</td>' +
-              '<td class="team">' + players[data.id].team + '</td>' +
+              '<td>' + players[data.id].team + '</td>' +
             '</tr>'
           );
           $('#match-' + match + ' .match-players').append(
             '<tr id="' + match + '-player-' + data.id + '">' +
-              '<td>' + players[data.id].team + '</td>' +
               '<td>' + data.id + '</td>' +
+              '<td>' + data.team + '</td>' +
               '<td>' + players[data.id].nickname + '</td>' +
               '<td class="kills">' + players[data.id].kills + '</td>' +
               '<td class="deaths">' + players[data.id].deaths + '</td>' +
