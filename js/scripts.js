@@ -257,7 +257,7 @@ $(function() {
     }
   }
 
-  $.get("data/matches.txt", function(data) {
+  $.get("data/all-matches.txt", function(data) {
     allevents = data.split('\n');
     allevents.reverse();
     // Starts the mocking activity.        
