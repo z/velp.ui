@@ -2,9 +2,20 @@ $(function() {
   var players = [];
   var mid = "";
   var m = {};
-  var jsonStream = new EventSource('stream.php');
+  var allevents;
+  //var jsonStream = new EventSource('stream.php');
+  var sock; // The global web socket.
+
+  // We can create a real web socket instance with a bogus URL.
+  // NOTE: This only works in Chrome as it will happily create
+  // a web socket in a disconnected state. Other browsers refuse
+  // to do so.
+  sock = new WebSocket( "ws://mock" );
   
-  jsonStream.onmessage = function (e) {
+  // This is unchanging production code that doesn't know
+  // we're mocking the web socket.
+  sock.onmessage = function( e ) {
+  //jsonStream.onmessage = function (e) { // alternatively, use a stream
     //var message = JSON.parse(e.data);
 
     function updateScore(column, newScore) {
@@ -223,4 +234,34 @@ $(function() {
     //console.log(event);
     addTo(event.type, event);
   };
+
+  /*$("#stop").click(function() {
+    jsonStream.close();
+  });*/
+
+  // Mocks web socket activity by pushing new items onto
+  // the mock data array and dispatching a MessageEvent.
+  function mockSock() {
+    // Dispatch the event directly on the web socket object.
+    // The event data is expecting the "data" key for the message
+    // data that's delivered to handlers.
+    var event = allevents.pop();
+    //console.log(event);
+    sock.dispatchEvent( new MessageEvent( "message", {
+      data: event
+    }));
+    
+    // Send another message in 3 seconds.
+    if (allevents.length > 0) {
+      setTimeout( mockSock, 50 );
+    }
+  }
+
+  $.get("data/matches.txt", function(data) {
+    allevents = data.split('\n');
+    allevents.reverse();
+    // Starts the mocking activity.        
+    mockSock();
+  });
+
 });

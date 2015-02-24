@@ -2,7 +2,7 @@
 date_default_timezone_set("America/New_York");
 header("Content-Type: text/event-stream\n\n");
 
-$f = fopen("data/all-matches.json", "r");
+$f = fopen("data/all-matches.txt", "r");
 $ln = 0;
 
 while ($match_line = fgets($f)) {
