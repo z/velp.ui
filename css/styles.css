@@ -20,10 +20,16 @@ body { font-size: 140%; }
 }
 
 .attn {
-  background-color: #AACDE2;
+  background-color: #7BFCAC;
   -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
      -moz-transition: all 0.3s ease-out;  /* FF4+ */
       -ms-transition: all 0.3s ease-out;  /* IE10 */
        -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
           transition: all 0.3s ease-out;
+}
+.red {
+  background-color: #F3C4C0;
+}
+.blue {
+  background-color: #CEEBFC;
 }

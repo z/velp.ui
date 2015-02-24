@@ -65,7 +65,7 @@ $(function() {
               '<td>' + m.mapname + '</td>' +
               '<td>' + m.matchid + '</td>' +
               '<td>' + m.gametype + '</td>' +
-              '<td class="mutators"></td>' +
+              '<td><ul class="mutators"></ul></td>' +
             '</tr>'
           );
           if (m.gametype == "ctf") {
@@ -120,7 +120,9 @@ $(function() {
           );
           break;
         case 'gameinfo':
-          $('#match-' + mid + ' .game-info .mutators').append('<tr><td>' + JSON.stringify(data.mutators) + '</td></tr>');
+          var mutators = "";
+          data.mutators.forEach(function(v, i) { mutators += '<li>' + v + '</li>'; } );
+          $('#match-' + mid + ' .game-info .mutators').append(mutators);
           break;
         case 'gameinfoend':
           //$('#match-' + mid + ' .game-info').append('<tr><td>!!</td></tr>');
@@ -146,15 +148,19 @@ $(function() {
           }
           break;
         case 'team':
+          var game = "";
+          var teamcolor = "";
+          players[data.id].team = data.team;
           if (m.gametype == "ctf") {
             game = '<td class="captures">' + players[data.id].captures + '</td>' +
               '<td class="steals">' + players[data.id].steals + '</td>' +
               '<td class="returns">' + players[data.id].returns + '</td>' +
               '<td class="drops">' + players[data.id].drops + '</td>';
+            if (players[data.id].team == 5) { teamcolor = ' class="red"'; }
+            if (players[data.id].team == 14) { teamcolor = ' class="blue"'; }
           }
-          players[data.id].team = data.team;
           $('#match-' + mid + ' .match-join-parts').append(
-            '<tr>' +
+            '<tr' + teamcolor + '>' +
               '<td>Join</td>' +
               '<td>' + players[data.id].slot + '</td>' +
               '<td>' + players[data.id].ip + '</td>' +
@@ -164,7 +170,7 @@ $(function() {
             '</tr>'
           );
           $('#match-' + mid + ' .match-players').append(
-            '<tr id="' + mid + '-player-' + data.id + '">' +
+            '<tr id="' + mid + '-player-' + data.id + '"' + teamcolor + '>' +
               '<td>' + data.id + '</td>' +
               '<td>' + data.team + '</td>' +
               '<td>' + players[data.id].nickname + '</td>' +
@@ -175,10 +181,15 @@ $(function() {
           );
           break;
         case 'kill':
+          var teamcolor = "";
+          if (m.gametype == "ctf") {
+            if (players[data['killer-id']].team == 5) { teamcolor = ' class="red"'; }
+            if (players[data['killer-id']].team == 14) { teamcolor = ' class="blue"'; }
+          }
           players[data['killer-id']].kills++;
           players[data['victim-id']].deaths++;
-          $('#match-' + mid + ' .match-kills').append(
-            '<tr>' +
+          $('#match-' + mid + ' .match-kills').prepend(
+            '<tr' + teamcolor + '>' +
               '<td>' + data.killtype + '</td>' +
               '<td>' + players[data['killer-id']].nickname + '</td>' +
               '<td>' + data['killer-items'] + '</td>' +
